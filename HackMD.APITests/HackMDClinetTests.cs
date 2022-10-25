@@ -10,8 +10,16 @@ namespace HackMD.API.Tests
     public class HackMDClinetTests
     {
 
-        const string token = "________________token____________________";
-        private string tempNote = "_______Test_doc_id___________";
+        private string token = "_____________token_____________";
+        private string tempNote = "________NoteId________";
+
+        public HackMDClinetTests()
+        {
+            var config = System.IO.File.ReadAllText("appsettings.json");
+            dynamic para = Newtonsoft.Json.Linq.JObject.Parse(config);
+            token = para.token;
+            tempNote = para.tempNote;
+        }
 
         [TestMethod()]
         public void CreateNoteTest()
@@ -29,14 +37,25 @@ namespace HackMD.API.Tests
 
             tempNote = ret.id;
             Assert.IsTrue(!string.IsNullOrEmpty(ret.id));
+            c.DeleteNote(ret.id);
         }
 
         [TestMethod()]
         public void DeleteNoteTest()
         {
             HackMDClinet c = new HackMDClinet(token);
-            var ret = c.DeleteNote(tempNote);
-            Assert.IsTrue(ret);
+            var ret = c.CreateNote(
+             new Note()
+             {
+                 title = "test document " + DateTime.UtcNow.AddHours(8),
+                 content = "",
+                 commentPermission = CommentPermissionPermission.disabled,
+                 readPermission = ReadWritePermission.owner,
+                 writePermission = ReadWritePermission.owner
+             });
+
+            tempNote = ret.id;
+            Assert.IsTrue(c.DeleteNote(tempNote));
         }
 
         [TestMethod()]

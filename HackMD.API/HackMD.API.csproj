@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>David Tung</Authors>
+    <Product>David</Product>
+    <Description>HackMD API C#</Description>
+    <PackageReleaseNotes>HackMD API C# init</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
