@@ -77,5 +77,26 @@ namespace HackMD.API.Tests
             Assert.IsTrue(response);
             c.DeleteNote(ret.id);
         }
+
+        [TestMethod()]
+        public void GetNoteTest()
+        {
+            HackMDClinet c = new HackMDClinet(token);
+            var ret = c.CreateNote(
+                new Note()
+                {
+                    title = "",
+                    content = "123",
+                    commentPermission = CommentPermissionPermission.disabled,
+                    readPermission = ReadWritePermission.owner,
+                    writePermission = ReadWritePermission.owner
+                });
+
+            tempNote = ret.id;
+
+            var note = c.GetNote(ret.id);
+            Assert.IsTrue(note.content == "123");
+            c.DeleteNote(ret.id);
+        }
     }
 }

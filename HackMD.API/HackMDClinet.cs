@@ -26,7 +26,7 @@ namespace HackMD.API
         /// </summary>
         /// <param name="newHackMDNote"></param>
         /// <returns></returns>
-        public CreateNoteResponse CreateNote(Note newHackMDNote)
+        public NoteResponse CreateNote(Note newHackMDNote)
         {
             HttpClient client = new HttpClient();
             string uri = endpoint + "/notes";
@@ -38,12 +38,20 @@ namespace HackMD.API
             // Asynchronously call the REST API method.
             var response = client.PostAsync(uri, content).Result;
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
-            var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<CreateNoteResponse>(ResponseBody);
+            var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
             return CreateNoteResponseObj;
         }
-        public string GetNote(string noteId)
+        public NoteResponse GetNote(string noteId)
         {
-            throw new NotImplementedException();
+            HttpClient client = new HttpClient();
+            string uri = endpoint + $"/notes/{noteId}";
+
+            // Request headers.
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
+            var response = client.GetAsync(uri).Result;
+            var ResponseBody = response.Content.ReadAsStringAsync().Result;
+            var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
+            return CreateNoteResponseObj;
         }
         public bool UpdateNote(string noteId, string content, ReadWritePermission readPermission, ReadWritePermission writePermission, string permalink)
         {

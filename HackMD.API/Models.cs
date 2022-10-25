@@ -31,11 +31,11 @@ namespace HackMD.API
         public string userPath { get; set; }
     }
 
-    public class CreateNoteResponse
+    public class NoteResponse
     {
         public string id { get; set; }
         public string title { get; set; }
-        public object tags { get; set; }
+        public List<string> tags { get; set; }
         public long createdAt { get; set; }
         public string publishType { get; set; }
         public object publishedAt { get; set; }
