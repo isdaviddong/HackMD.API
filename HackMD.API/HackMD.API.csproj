@@ -7,9 +7,9 @@
     <Product>David</Product>
     <Description>HackMD API C#</Description>
     <PackageReleaseNotes>HackMD API C# init</PackageReleaseNotes>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
 </Project>

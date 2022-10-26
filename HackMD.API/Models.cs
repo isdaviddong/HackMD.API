@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace HackMD.API
 {
@@ -11,15 +12,18 @@ namespace HackMD.API
 
     public enum CommentPermissionPermission
     {
-     disabled, forbidden, owners, signed_in_users, everyone
+        disabled, forbidden, owners, signed_in_users, everyone
     }
 
     public class Note
     {
         public string title { get; set; }
         public string content { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ReadWritePermission readPermission { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ReadWritePermission writePermission { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CommentPermissionPermission commentPermission { get; set; }
     }
 

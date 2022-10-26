@@ -29,7 +29,7 @@ namespace HackMD.API.Tests
                 new Note()
                 {
                     title = "test document " + DateTime.UtcNow.AddHours(8),
-                    content = "",
+                    content = "> content",
                     commentPermission = CommentPermissionPermission.disabled,
                     readPermission = ReadWritePermission.owner,
                     writePermission = ReadWritePermission.owner
@@ -37,7 +37,7 @@ namespace HackMD.API.Tests
 
             tempNote = ret.id;
             Assert.IsTrue(!string.IsNullOrEmpty(ret.id));
-            c.DeleteNote(ret.id);
+            //c.DeleteNote(ret.id);
         }
 
         [TestMethod()]
