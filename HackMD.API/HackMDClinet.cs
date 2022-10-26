@@ -20,7 +20,22 @@ namespace HackMD.API
         }
 
         private string endpoint = "https://api.hackmd.io/v1/";
+        #region "User API"
+        public User GetUserInformation()
+        {
+            HttpClient client = new HttpClient();
+            string uri = endpoint + $"/me";
 
+            // Request headers.
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
+            var response = client.GetAsync(uri).Result;
+            var ResponseBody = response.Content.ReadAsStringAsync().Result;
+            var UserObj = System.Text.Json.JsonSerializer.Deserialize<User>(ResponseBody);
+            return UserObj;
+        }
+        #endregion
+
+        #region "User Notes API"
         /// <summary>
         /// Create a note
         /// </summary>
@@ -91,6 +106,6 @@ namespace HackMD.API
             var response = client.DeleteAsync(uri).Result;
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
-
+        #endregion
     }
 }

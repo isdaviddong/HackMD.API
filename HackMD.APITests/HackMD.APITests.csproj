@@ -1,15 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
+    <Content Remove="C:\Users\vmadmin\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll" />
+    <Content Remove="C:\Users\vmadmin\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\vmadmin\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\vmadmin\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\..\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" />
+    <None Remove="C:\Users\vmadmin\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\..\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" />
+    <None Remove="C:\Users\vmadmin\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" />
+    <None Remove="C:\Users\vmadmin\.nuget\packages\mstest.testadapter\2.2.3\build\netcoreapp1.0\\Microsoft.TestPlatform.AdapterUtilities.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 

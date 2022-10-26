@@ -25,10 +25,24 @@ namespace HackMD.API
 
     public class User
     {
+        public string id { get; set; }
         public string name { get; set; }
+        public object email { get; set; }
         public string photo { get; set; }
         public object biography { get; set; }
         public string userPath { get; set; }
+        public List<Team> teams { get; set; }
+    }
+    public class Team
+    {
+        public string id { get; set; }
+        public string ownerId { get; set; }
+        public string path { get; set; }
+        public string name { get; set; }
+        public string logo { get; set; }
+        public string description { get; set; }
+        public string visibility { get; set; }
+        public long createdAt { get; set; }
     }
 
     public class NoteResponse

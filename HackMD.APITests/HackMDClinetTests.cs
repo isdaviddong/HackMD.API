@@ -9,16 +9,16 @@ namespace HackMD.API.Tests
     [TestClass()]
     public class HackMDClinetTests
     {
-
         private string token = "_____________token_____________";
         private string tempNote = "________NoteId________";
-
+        private string name = "________name________";
         public HackMDClinetTests()
         {
             var config = System.IO.File.ReadAllText("appsettings.json");
             dynamic para = Newtonsoft.Json.Linq.JObject.Parse(config);
             token = para.token;
             tempNote = para.tempNote;
+            name = para.name;
         }
 
         [TestMethod()]
@@ -97,6 +97,14 @@ namespace HackMD.API.Tests
             var note = c.GetNote(ret.id);
             Assert.IsTrue(note.content == "123");
             c.DeleteNote(ret.id);
+        }
+
+        [TestMethod()]
+        public void GetUserInformationTest()
+        {
+            HackMDClinet c = new HackMDClinet(token);
+            var ret = c.GetUserInformation();
+            Assert.IsTrue(ret.name.ToString() == this.name);
         }
     }
 }
