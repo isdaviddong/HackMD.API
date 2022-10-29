@@ -10,15 +10,15 @@ HackMD.API
 >    1. 申請  HackMd API token
 >    2. 在專案中引用套件
 
-### 使用API:  
-申請 HackMd API token:   
+### 如何使用API:  
+請先申請 HackMd API token:   
 參考官方文件  https://hackmd.io/@hackmd-api/how-to-issue-an-api-token
 
-dotnet core 引用套件:
+🔥dotnet core 引用套件(VS Code/CLI):
 ```
 dotnet add package HackMD.API 
 ```
-Visual Studio 引用套件:
+🔥Visual Studio 引用套件:
 <img src='https://i.imgur.com/jNVpKeU.png' />
 
 ### === 功能範例 ===
