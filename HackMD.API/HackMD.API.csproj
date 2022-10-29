@@ -5,11 +5,15 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>David Tung</Authors>
     <Product>David</Product>
-    <Description>HackMD API C#</Description>
+    <Description>HackMD.API C# SDK  (.net core 3.1+ supported)
+usage:
+https://github.com/isdaviddong/HackMD.API</Description>
     <PackageReleaseNotes>HackMD API C# init</PackageReleaseNotes>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
+    <PackageProjectUrl>https://github.com/isdaviddong/HackMD.API</PackageProjectUrl>
+    <Copyright>MIT</Copyright>
   </PropertyGroup>
 
 </Project>
