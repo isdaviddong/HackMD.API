@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HackMD.API;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackMD.API.Tests
 {
@@ -25,7 +22,7 @@ namespace HackMD.API.Tests
         public void CreateNoteTest()
         {
             // 建立HackMDClient 物件
-            HackMDClient c = new HackMDClient(token); //須提供token
+            HackMDClient c = new HackMDClient(this.token); //須提供token
             //建立新 Note
             var ret = c.CreateNote(
                 new Note()
@@ -39,14 +36,14 @@ namespace HackMD.API.Tests
             //取得 NoteId
             TempNoteId = ret.id;
             Assert.IsTrue(!string.IsNullOrEmpty(ret.id));
-            //c.DeleteNote(ret.id);
+            // c.DeleteNote(ret.id);
         }
 
         [TestMethod()]
         public void DeleteNoteTest()
         {
             // 建立HackMDClient 物件
-            HackMDClient c = new HackMDClient(token); //須提供token
+            HackMDClient c = new HackMDClient(this.token); //須提供token
             var ret = c.CreateNote(
              new Note()
              {
@@ -67,7 +64,7 @@ namespace HackMD.API.Tests
         public void UpdateNoteTest()
         {
             // 建立HackMDClient 物件
-            HackMDClient c = new HackMDClient(token); //須提供token
+            HackMDClient c = new HackMDClient(this.token); //須提供token
             var ret = c.CreateNote(
                new Note()
                {
@@ -94,7 +91,7 @@ namespace HackMD.API.Tests
         public void GetNoteTest()
         {
             // 建立HackMDClient 物件
-            HackMDClient c = new HackMDClient(token); //須提供token
+            HackMDClient c = new HackMDClient(this.token); //須提供token
             //建立文件
             var ret = c.CreateNote(
                 new Note()

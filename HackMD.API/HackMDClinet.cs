@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HackMD.API
 {
@@ -19,38 +23,40 @@ namespace HackMD.API
             return socketsHandler;
         });
 
-        private static readonly Lazy<HttpClient> s_clientLazy = new Lazy<HttpClient>(() =>
-            new HttpClient(s_socketLazy.Value)
-            {
-                BaseAddress = new Uri("https://api.hackmd.io/v1/")
-            });
-
-        private static HttpClient s_client => s_clientLazy.Value;
-
-        public string Token
-        {
-            get { return token; }
-            set { token = value; }
-        }
+        private readonly string _token;
 
         public HackMDClient(string token)
         {
-            this.Token = token;
+            this._token = token;
+        }
+
+        static HttpClient CreateHttpClient(string token)
+        {
+            return new HttpClient(s_socketLazy.Value)
+            {
+                DefaultRequestHeaders =
+                {
+                    Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,
+                        token)
+                },
+                BaseAddress = new Uri("https://api.hackmd.io/v1/")
+            };
         }
 
         #region "User API"
 
-        public User GetUserInformation()
+        public User GetUserInformation() => this.GetUserInformationAsync().Result;
+
+        public async Task<User> GetUserInformationAsync(CancellationToken cancel = default)
         {
-            var client = s_client;
+            var client = CreateHttpClient(this._token);
             string uri = "me";
 
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-            var response = client.GetAsync(uri).Result;
-            var ResponseBody = response.Content.ReadAsStringAsync().Result;
-            var UserObj = System.Text.Json.JsonSerializer.Deserialize<User>(ResponseBody);
-            return UserObj;
+            var request = CreateDefaultHttpRequest(token, uri);
+            var response = await client.SendAsync(request, cancel);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = System.Text.Json.JsonSerializer.Deserialize<User>(responseBody);
+            return result;
         }
 
         #endregion
@@ -62,57 +68,57 @@ namespace HackMD.API
         /// </summary>
         /// <param name="newHackMDNote"></param>
         /// <returns></returns>
-        public NoteResponse CreateNote(Note newHackMDNote)
+        public NoteResponse CreateNote(Note newHackMDNote) => this.CreateNoteAsync(newHackMDNote).Result;
+
+        public async Task<NoteResponse> CreateNoteAsync(Note newHackMDNote, CancellationToken cancel = default)
         {
-            var client = s_client;
+            var client = CreateHttpClient(this._token);
             string uri = "notes";
 
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-            var JSON = System.Text.Json.JsonSerializer.Serialize(newHackMDNote);
-            var content = new StringContent(JSON, Encoding.UTF8, "application/json");
+            var requestBody = System.Text.Json.JsonSerializer.Serialize(newHackMDNote);
+            var requestContent = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
             // Asynchronously call the REST API method.
-            var response = client.PostAsync(uri, content).Result;
-            var ResponseBody = response.Content.ReadAsStringAsync().Result;
-            var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
-            return CreateNoteResponseObj;
+            var response = await client.PostAsync(uri, requestContent, cancel);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(responseBody);
+            return result;
         }
 
-        public NoteResponse GetNote(string noteId)
+        public NoteResponse GetNote(string noteId) => this.GetNoteAsync(noteId).Result;
+
+        public async Task<NoteResponse> GetNoteAsync(string noteId)
         {
-            var client = s_client;
+            var client = CreateHttpClient(this._token);
             string uri = $"notes/{noteId}";
 
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-            var response = client.GetAsync(uri).Result;
-            var ResponseBody = response.Content.ReadAsStringAsync().Result;
-            var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
-            return CreateNoteResponseObj;
+            var response = await client.GetAsync(uri);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(responseBody);
+            return result;
         }
 
         public bool UpdateNote(string noteId, string content, ReadWritePermission readPermission,
+            ReadWritePermission writePermission, string permalink) =>
+            this.UpdateNoteAsync(noteId, content, readPermission, writePermission, permalink).Result;
+
+        public async Task<bool> UpdateNoteAsync(string noteId, string content, ReadWritePermission readPermission,
             ReadWritePermission writePermission, string permalink)
         {
-            var client = s_client;
+            var client = CreateHttpClient(this._token);
 
             string uri = $"notes/{noteId}";
 
-            var obj = new
+            var requestBody = System.Text.Json.JsonSerializer.Serialize(new
             {
-                content = content,
+                content,
                 readPermission = readPermission.ToString(),
                 writePermission = writePermission.ToString(),
-                permalink = permalink
-            };
-
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-            var JSON = System.Text.Json.JsonSerializer.Serialize(obj);
-            var body = new StringContent(JSON, Encoding.UTF8, "application/json");
-            var response = client.PatchAsync(uri, body).Result;
-            var ResponseBody = response.Content.ReadAsStringAsync().Result;
+                permalink
+            });
+            var requestContent = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync(uri, requestContent);
+            var responseBody = await response.Content.ReadAsStringAsync();
             return response.StatusCode == System.Net.HttpStatusCode.Accepted;
         }
 
@@ -121,19 +127,25 @@ namespace HackMD.API
         /// </summary>
         /// <param name="noteId"></param>
         /// <returns></returns>
-        public bool DeleteNote(string noteId)
+        public bool DeleteNote(string noteId) => this.DeleteNoteAsync(noteId).Result;
+
+        public async Task<bool> DeleteNoteAsync(string noteId)
         {
-            var client = s_client;
+            var client = CreateHttpClient(this._token);
 
             string uri = $"notes/{noteId}";
 
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-
-            var response = client.DeleteAsync(uri).Result;
+            var response = await client.DeleteAsync(uri);
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
         #endregion
+
+        private static HttpRequestMessage CreateDefaultHttpRequest(string token, string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Add("Authorization", $"Bearer {token}");
+            return request;
+        }
     }
 }
