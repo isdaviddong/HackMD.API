@@ -8,6 +8,17 @@ namespace HackMD.API
     {
         private string token;
 
+        private readonly Lazy<SocketsHttpHandler> s_socketLazy = new Lazy<SocketsHttpHandler>(() =>
+        {
+            var socketsHandler = new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5),
+                MaxConnectionsPerServer = 10
+            };
+            return socketsHandler;
+        });
+
         public string Token
         {
             get { return token; }
@@ -19,12 +30,20 @@ namespace HackMD.API
             this.Token = token;
         }
 
-        private string endpoint = "https://api.hackmd.io/v1/";
+        HttpClient CreateHttpClient()
+        {
+            return new HttpClient(this.s_socketLazy.Value)
+            {
+                BaseAddress = new Uri("https://api.hackmd.io/v1/")
+            };
+        }
+
         #region "User API"
+
         public User GetUserInformation()
         {
-            HttpClient client = new HttpClient();
-            string uri = endpoint + $"/me";
+            using HttpClient client = this.CreateHttpClient();
+            string uri = "me";
 
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
@@ -33,9 +52,11 @@ namespace HackMD.API
             var UserObj = System.Text.Json.JsonSerializer.Deserialize<User>(ResponseBody);
             return UserObj;
         }
+
         #endregion
 
         #region "User Notes API"
+
         /// <summary>
         /// Create a note
         /// </summary>
@@ -43,23 +64,25 @@ namespace HackMD.API
         /// <returns></returns>
         public NoteResponse CreateNote(Note newHackMDNote)
         {
-            HttpClient client = new HttpClient();
-            string uri = endpoint + "/notes";
+            using HttpClient client = this.CreateHttpClient();
+            string uri = "notes";
 
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
             var JSON = System.Text.Json.JsonSerializer.Serialize(newHackMDNote);
             var content = new StringContent(JSON, Encoding.UTF8, "application/json");
+
             // Asynchronously call the REST API method.
             var response = client.PostAsync(uri, content).Result;
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
             var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
             return CreateNoteResponseObj;
         }
+
         public NoteResponse GetNote(string noteId)
         {
-            HttpClient client = new HttpClient();
-            string uri = endpoint + $"/notes/{noteId}";
+            using HttpClient client = this.CreateHttpClient();
+            string uri =  $"notes/{noteId}";
 
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
@@ -68,10 +91,13 @@ namespace HackMD.API
             var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
             return CreateNoteResponseObj;
         }
-        public bool UpdateNote(string noteId, string content, ReadWritePermission readPermission, ReadWritePermission writePermission, string permalink)
+
+        public bool UpdateNote(string noteId, string content, ReadWritePermission readPermission,
+            ReadWritePermission writePermission, string permalink)
         {
-            HttpClient client = new HttpClient();
-            string uri = endpoint + $"/notes/{noteId}";
+            using HttpClient client = this.CreateHttpClient();
+
+            string uri =  $"notes/{noteId}";
 
             var obj = new
             {
@@ -97,8 +123,9 @@ namespace HackMD.API
         /// <returns></returns>
         public bool DeleteNote(string noteId)
         {
-            HttpClient client = new HttpClient();
-            string uri = endpoint + $"/notes/{noteId}";
+            using HttpClient client = this.CreateHttpClient();
+
+            string uri =  $"notes/{noteId}";
 
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
@@ -106,6 +133,7 @@ namespace HackMD.API
             var response = client.DeleteAsync(uri).Result;
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
+
         #endregion
     }
 }
