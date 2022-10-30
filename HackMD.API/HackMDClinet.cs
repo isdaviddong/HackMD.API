@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HackMD.API
 {
-    public class HackMDClinet
+    public class HackMDClient
     {
         private string token;
 
@@ -14,7 +14,7 @@ namespace HackMD.API
             set { token = value; }
         }
 
-        public HackMDClinet(string token)
+        public HackMDClient(string token)
         {
             this.Token = token;
         }

@@ -24,8 +24,8 @@ dotnet add package HackMD.API
 ### === 功能範例 ===
 👉建立新文件
 ```cs
-// 建立HackMDClinet 物件
-HackMDClinet c = new HackMDClinet(token); //須提供token
+// 建立HackMDClient 物件
+HackMDClient c = new HackMDClient(token); //須提供token
 //建立新 Note
 var ret = c.CreateNote(
     new Note()
@@ -42,8 +42,8 @@ tempNote = ret.id;
 
 👉取得文件
 ```cs
-// 建立HackMDClinet 物件
-HackMDClinet c = new HackMDClinet(token); //須提供token
+// 建立HackMDClient 物件
+HackMDClient c = new HackMDClient(token); //須提供token
 //建立文件
 var ret = c.CreateNote(
     new Note()
@@ -63,7 +63,7 @@ var note = c.GetNote(TempNoteId); //傳入文件id
 
 👉更新文件
 ```cs
-HackMDClinet c = new HackMDClinet(token);
+HackMDClient c = new HackMDClient(token);
 //更新文件
 var response = c.UpdateNote(
     ret.id,  //文件id
@@ -76,8 +76,8 @@ var response = c.UpdateNote(
 
 👉刪除文件
 ```cs
-// 建立HackMDClinet 物件
-HackMDClinet c = new HackMDClinet(token); //須提供token
+// 建立HackMDClient 物件
+HackMDClient c = new HackMDClient(token); //須提供token
 //刪除文件
 var result = c.DeleteNote(tempNoteId  ); //文件id
 ```

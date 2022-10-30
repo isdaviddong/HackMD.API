@@ -7,12 +7,12 @@ using System.Text;
 namespace HackMD.API.Tests
 {
     [TestClass()]
-    public class HackMDClinetTests
+    public class HackMDClientTests
     {
         private string token = "_____________token_____________";
         private string TempNoteId = "________NoteId________";
         private string name = "________name________";
-        public HackMDClinetTests()
+        public HackMDClientTests()
         {
             var config = System.IO.File.ReadAllText("appsettings.json");
             dynamic para = Newtonsoft.Json.Linq.JObject.Parse(config);
@@ -24,8 +24,8 @@ namespace HackMD.API.Tests
         [TestMethod()]
         public void CreateNoteTest()
         {
-            // 建立HackMDClinet 物件
-            HackMDClinet c = new HackMDClinet(token); //須提供token
+            // 建立HackMDClient 物件
+            HackMDClient c = new HackMDClient(token); //須提供token
             //建立新 Note
             var ret = c.CreateNote(
                 new Note()
@@ -45,8 +45,8 @@ namespace HackMD.API.Tests
         [TestMethod()]
         public void DeleteNoteTest()
         {
-            // 建立HackMDClinet 物件
-            HackMDClinet c = new HackMDClinet(token); //須提供token
+            // 建立HackMDClient 物件
+            HackMDClient c = new HackMDClient(token); //須提供token
             var ret = c.CreateNote(
              new Note()
              {
@@ -66,8 +66,8 @@ namespace HackMD.API.Tests
         [TestMethod()]
         public void UpdateNoteTest()
         {
-            // 建立HackMDClinet 物件
-            HackMDClinet c = new HackMDClinet(token); //須提供token
+            // 建立HackMDClient 物件
+            HackMDClient c = new HackMDClient(token); //須提供token
             var ret = c.CreateNote(
                new Note()
                {
@@ -93,8 +93,8 @@ namespace HackMD.API.Tests
         [TestMethod()]
         public void GetNoteTest()
         {
-            // 建立HackMDClinet 物件
-            HackMDClinet c = new HackMDClinet(token); //須提供token
+            // 建立HackMDClient 物件
+            HackMDClient c = new HackMDClient(token); //須提供token
             //建立文件
             var ret = c.CreateNote(
                 new Note()
@@ -116,8 +116,8 @@ namespace HackMD.API.Tests
         [TestMethod()]
         public void GetUserInformationTest()
         {
-            // 建立HackMDClinet 物件
-            HackMDClinet c = new HackMDClinet(token); //須提供token
+            // 建立HackMDClient 物件
+            HackMDClient c = new HackMDClient(token); //須提供token
             var ret = c.GetUserInformation();
             Assert.IsTrue(ret.name.ToString() == this.name);
         }

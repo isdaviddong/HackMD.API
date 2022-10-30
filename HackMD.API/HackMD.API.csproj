@@ -8,12 +8,13 @@
     <Description>HackMD.API C# SDK  (.net core 3.1+ supported)
 usage:
 https://github.com/isdaviddong/HackMD.API</Description>
-    <PackageReleaseNotes>HackMD API C# init</PackageReleaseNotes>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
-    <Version>1.0.4</Version>
+    <PackageReleaseNotes>typo fix</PackageReleaseNotes>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.0.5</Version>
     <PackageProjectUrl>https://github.com/isdaviddong/HackMD.API</PackageProjectUrl>
     <Copyright>MIT</Copyright>
+    <RepositoryUrl>https://github.com/isdaviddong/HackMD.API</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
