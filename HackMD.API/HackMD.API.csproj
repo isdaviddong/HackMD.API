@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>David Tung</Authors>
     <Product>David</Product>
-    <Description>HackMD.API C# SDK  (.net core 3.1+ supported)
+    <Description>HackMD.API C# SDK
 usage:
 https://github.com/isdaviddong/HackMD.API</Description>
     <PackageReleaseNotes>typo fix</PackageReleaseNotes>
     <AssemblyVersion>1.0.5.0</AssemblyVersion>
     <FileVersion>1.0.5.0</FileVersion>
-    <Version>1.0.5</Version>
+    <Version>1.1.5</Version>
     <PackageProjectUrl>https://github.com/isdaviddong/HackMD.API</PackageProjectUrl>
     <Copyright>MIT</Copyright>
     <RepositoryUrl>https://github.com/isdaviddong/HackMD.API</RepositoryUrl>

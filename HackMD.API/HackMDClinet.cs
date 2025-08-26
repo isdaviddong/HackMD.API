@@ -29,6 +29,13 @@ namespace HackMD.API
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
             var response = client.GetAsync(uri).Result;
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error getting user information: {response.Content.ReadAsStringAsync().Result}", null, response.StatusCode);
+            }
+
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
             var UserObj = System.Text.Json.JsonSerializer.Deserialize<User>(ResponseBody);
             return UserObj;
@@ -50,8 +57,13 @@ namespace HackMD.API
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
             var JSON = System.Text.Json.JsonSerializer.Serialize(newHackMDNote);
             var content = new StringContent(JSON, Encoding.UTF8, "application/json");
-            // Asynchronously call the REST API method.
             var response = client.PostAsync(uri, content).Result;
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error creating note: {response.Content.ReadAsStringAsync().Result}", null, response.StatusCode);
+            }
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
             var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
             return CreateNoteResponseObj;
@@ -64,6 +76,12 @@ namespace HackMD.API
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
             var response = client.GetAsync(uri).Result;
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error getting note: {response.Content.ReadAsStringAsync().Result}", null, response.StatusCode);
+            }
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
             var CreateNoteResponseObj = System.Text.Json.JsonSerializer.Deserialize<NoteResponse>(ResponseBody);
             return CreateNoteResponseObj;
@@ -86,6 +104,12 @@ namespace HackMD.API
             var JSON = System.Text.Json.JsonSerializer.Serialize(obj);
             var body = new StringContent(JSON, Encoding.UTF8, "application/json");
             var response = client.PatchAsync(uri, body).Result;
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error updating note: {response.Content.ReadAsStringAsync().Result}", null, response.StatusCode);
+            }
             var ResponseBody = response.Content.ReadAsStringAsync().Result;
             return response.StatusCode == System.Net.HttpStatusCode.Accepted;
         }
@@ -102,8 +126,13 @@ namespace HackMD.API
 
             // Request headers.
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.Token}");
-
             var response = client.DeleteAsync(uri).Result;
+
+            // Check if the response is successful
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error deleting note: {response.Content.ReadAsStringAsync().Result}", null, response.StatusCode);
+            }
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
         #endregion

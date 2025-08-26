@@ -9,7 +9,7 @@ namespace HackMD.API.Tests
     [TestClass()]
     public class HackMDClientTests
     {
-        private string token = "_____________token_____________";
+        private string token = "7ZISJCJF5DFVM4NN44HN6KADTNSQCE3AHGUSEPM2CXR1TIVOU";
         private string TempNoteId = "________NoteId________";
         private string name = "________name________";
         public HackMDClientTests()
